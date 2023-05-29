@@ -1,0 +1,1 @@
+insert into  order_demo2 select city, max(amount) as amount from order_demo_test group by city
