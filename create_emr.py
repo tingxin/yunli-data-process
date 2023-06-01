@@ -1,12 +1,31 @@
 import boto3
 
+
+client = boto3.client(
+    'emr',
+    region_name='cn-northwest-1',
+    aws_access_key_id='YOUR_ACCESS_KEY',
+    aws_secret_access_key='YOUR_SECRET_KEY'
+)
+
+
 emr_client = boto3.client('emr', region_name='cn-northwest-1')
 
 # 配置集群参数
 cluster_params = {
-    'Name': 'script_emr_pro3',
+    'Name': 'emr_pro2',
     'ReleaseLabel': 'emr-6.5.0',  # EMR 版本号
-    'Applications': [{'Name': 'Spark'}, {'Name': 'Hadoop'}],  # 需要的应用程序
+    'Applications': [
+        {
+            'Name': 'Hadoop'
+        },
+        {
+            'Name': 'Hive'
+        },
+        {
+            'Name': 'Spark'
+        }
+    ],  # 需要的应用程序
     'Instances': {
         'InstanceGroups': [
             {
@@ -44,7 +63,22 @@ cluster_params = {
     'Steps': [],
     'BootstrapActions': [],
     'Configurations': [],
-    'EbsRootVolumeSize': 30
+    'EbsRootVolumeSize': 30,
+    'LogUri':'s3://tx-emr/log/',
+    'Configurations': [
+        {
+            'Classification': 'hive-site',
+            'Properties': {
+                'hive.metastore.client.factory.class': 'com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory'
+            }
+        },
+        {
+            'Classification': 'spark-hive-site',
+            'Properties': {
+                'hive.metastore.client.factory.class': 'com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory'
+            }
+        }
+    ]
 }
 
 # 创建集群
