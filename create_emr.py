@@ -13,7 +13,7 @@ emr_client = boto3.client('emr', region_name='cn-northwest-1')
 
 # 配置集群参数
 cluster_params = {
-    'Name': 'emr_pro2',
+    'Name': 'emr3',
     'ReleaseLabel': 'emr-6.5.0',  # EMR 版本号
     'Applications': [
         {
@@ -63,7 +63,7 @@ cluster_params = {
     'Steps': [],
     'BootstrapActions': [],
     'Configurations': [],
-    'EbsRootVolumeSize': 30,
+    'EbsRootVolumeSize': 30, # 本地磁盘大小
     'LogUri':'s3://tx-emr/log/',
     'Configurations': [
         {
@@ -78,7 +78,16 @@ cluster_params = {
                 'hive.metastore.client.factory.class': 'com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory'
             }
         }
-    ]
+    ],
+    'ManagedScalingPolicy':{ # AutoSCalingPolicy
+        "ComputeLimits":{
+            "MaximumOnDemandCapacityUnits":2,
+            "UnitType":"Instances",
+            "MaximumCapacityUnits":6,
+            "MinimumCapacityUnits":2,
+            "MaximumCoreCapacityUnits":2
+        }
+    }
 }
 
 # 创建集群
