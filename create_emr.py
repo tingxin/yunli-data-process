@@ -77,6 +77,10 @@ cluster_params = {
             'Properties': {
                 'hive.metastore.client.factory.class': 'com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory'
             }
+        },
+        {
+            "Classification":"iceberg-defaults",
+            "Properties":{"iceberg.enabled":"true"}
         }
     ],
     'ManagedScalingPolicy':{ # AutoSCalingPolicy
