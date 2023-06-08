@@ -2,9 +2,11 @@ import boto3
 
 # 创建EMR客户端
 emr_client = boto3.client('emr', region_name='cn-northwest-1')
+#spark 生成 iceberg 表，必须有个warehouse path, 一般是所有iceberg 表的前缀
+warehouse = 's3://tx-emr/icebergdemo'
 
 response = emr_client.add_job_flow_steps(
-    JobFlowId='j-3HIXNKF8OYH3K',
+    JobFlowId='j-31SJ2E3RY3NU2',
     Steps=[
         {
             'Name': 'Spark SQL Job',
@@ -15,9 +17,14 @@ response = emr_client.add_job_flow_steps(
                     'spark-submit',
                     '--master', 'yarn',
                     '--deploy-mode', 'cluster',
+                    '--conf','spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions',
+                    '--conf','spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog',
+                    '--conf','spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog',
+                    '--conf','spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO',
+                    '--conf',f'spark.sql.catalog.AwsDataCatalog.warehouse={warehouse}',
                     's3://tx-emr/yunlisql/sparksql.py',
                     "--name", "demo112",
-                    "--sql", "insert into order_demo2 select city, max(amount) as amount from order_demo_test group by city"
+                    "--sql", "insert into AwsDataCatalog.study.ice_demo3 select * from AwsDataCatalog.study.ice_demo2"
                 ]
             }
         }

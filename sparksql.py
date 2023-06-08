@@ -3,8 +3,10 @@ from pyspark.sql import SparkSession
 
 def run_sql(name, sql):
     with SparkSession.builder.appName(name)\
-    .config('spark.sql.catalogImplementation', 'hive')\
     .config('spark.jars', '/usr/share/aws/iceberg/lib/iceberg-spark3-runtime.jar')\
+    .config("spark.sql.catalogImplementation", "hive") \
+    .config("spark.sql.sources.partitionOverwriteMode", "dynamic") \
+    .config("hive.metastore.client.factory.class", "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory") \
     .enableHiveSupport().getOrCreate() as spark:
                  spark.sql("show tables").show()
                  spark.sql(sql)
