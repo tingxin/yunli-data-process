@@ -21,6 +21,7 @@ response = emr_client.add_job_flow_steps(
                     '--conf','spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog',
                     '--conf','spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog',
                     '--conf','spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO',
+                    '--conf','spark.hadoop.hive.metastore.client.factory.class=com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory'
                     '--conf',f'spark.sql.catalog.AwsDataCatalog.warehouse={warehouse}',
                     's3://tx-emr/yunlisql/sparksql.py',
                     "--name", "demo112",
