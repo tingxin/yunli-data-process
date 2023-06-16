@@ -6,7 +6,7 @@ emr_client = boto3.client('emr', region_name='cn-northwest-1')
 warehouse = 's3://tx-emr/icebergdemo'
 
 response = emr_client.add_job_flow_steps(
-    JobFlowId='j-31SJ2E3RY3NU2',
+    JobFlowId='j-2OI8QAWE9OX3H',
     Steps=[
         {
             'Name': 'Spark SQL Job',
@@ -21,11 +21,11 @@ response = emr_client.add_job_flow_steps(
                     '--conf','spark.sql.catalog.AwsDataCatalog=org.apache.iceberg.spark.SparkCatalog',
                     '--conf','spark.sql.catalog.AwsDataCatalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog',
                     '--conf','spark.sql.catalog.AwsDataCatalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO',
-                    '--conf','spark.hadoop.hive.metastore.client.factory.class=com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory'
+                    '--conf','spark.hadoop.hive.metastore.client.factory.class=com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory',
                     '--conf',f'spark.sql.catalog.AwsDataCatalog.warehouse={warehouse}',
                     's3://tx-emr/yunlisql/sparksql.py',
                     "--name", "demo112",
-                    "--sql", "insert into AwsDataCatalog.study.ice_demo3 select * from AwsDataCatalog.study.ice_demo2"
+                    "--sql", "insert into AwsDataCatalog.study.test0 select * from AwsDataCatalog.study.test5 limit 10"
                 ]
             }
         }
