@@ -4,7 +4,6 @@ from pyspark.sql import SparkSession
 def run_sql(name, sql):
     with SparkSession.builder.appName(name)\
     .config('spark.jars', '/usr/share/aws/iceberg/lib/iceberg-spark3-runtime.jar')\
-    .config("spark.sql.sources.partitionOverwriteMode", "dynamic") \
     .enableHiveSupport().getOrCreate() as spark:
                  spark.sql(sql)
 
