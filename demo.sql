@@ -1,1 +1,1 @@
-insert into  order_demo2 select city, max(amount) as amount from order_demo_test group by city
+insert into demo2.quick2 values (current_timestamp(), 12.12, 9, '测试中文999', '2023-01','2023-01-01')

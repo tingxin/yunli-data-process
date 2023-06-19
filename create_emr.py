@@ -14,7 +14,7 @@ emr_client = boto3.client('emr', region_name='cn-northwest-1')
 # 配置集群参数
 cluster_params = {
     'Name': 'emr3',
-    'ReleaseLabel': 'emr-6.5.0',  # EMR 版本号
+    'ReleaseLabel': 'emr-6.10.0',  # EMR 版本号
     'Applications': [
         {
             'Name': 'Hadoop'
@@ -24,6 +24,9 @@ cluster_params = {
         },
         {
             'Name': 'Spark'
+        },
+        {
+            'Name': 'Trino'
         }
     ],  # 需要的应用程序
     'Instances': {
@@ -61,11 +64,22 @@ cluster_params = {
     'ServiceRole': 'EMR_DefaultRole',
     'VisibleToAllUsers': True,
     'Steps': [],
-    'BootstrapActions': [],
+    'BootstrapActions': [{
+        'Name': 'TrinoCatalog',
+        'ScriptBootstrapAction': {
+            'Path': 's3://tx-emr/plugin/iceberg/boots.sh'
+        }
+    }],
     'Configurations': [],
     'EbsRootVolumeSize': 30, # 本地磁盘大小
     'LogUri':'s3://tx-emr/log/',
     'Configurations': [
+         {
+            'Classification': 'core-site',
+            'Properties': {
+                's3a.endpoint': 's3.cn-northwest-1.amazonaws.com.cn'
+            }
+        },
         {
             'Classification': 'hive-site',
             'Properties': {
