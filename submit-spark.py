@@ -7,10 +7,10 @@ from datetime import date
 
 
 ### 这里修改你提交的SQL以及给这个SQL 任务起一个可识别的名字
-TASK_NAME = 'quick4'
+TASK_NAME = 'fast1'
 ### 这里是SQL的列表
 SQL = ["""
-CREATE TABLE IF NOT EXIST demo2.quick4 (
+CREATE TABLE IF NOT EXISTS demo2.fast1 (
   col_timestamp timestamp COMMENT '',
   col_decimal decimal(18, 2) COMMENT '',
   col_int int COMMENT '',
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXIST demo2.quick4 (
   col_dt string COMMENT '')
 USING iceberg
 PARTITIONED BY (col_month, col_dt)
-LOCATION 's3://tx-emr/icebergdemo/demo2/quick4'
+LOCATION 's3://tx-emr/icebergdemo/demo2/fast1'
 TBLPROPERTIES (
   'vacuum_max_snapshot_age_seconds'='3600000',
   'parquet.charset'='UTF-8',
@@ -27,7 +27,7 @@ TBLPROPERTIES (
 )
 """,
 """
-insert into demo2.quick4 values (current_timestamp(), 12.12, 9, '测试中文999', '2023-01','2023-01-01')
+insert into demo2.fast1 values (current_timestamp(), 12.12, 9, '测试中文999', '2023-01','2023-01-01')
 """
 ]
 
@@ -40,7 +40,7 @@ CODE_REPO = 's3://tx-emr/code'
 DEFAULT_CATALOG = 'AwsDataCatalog'
 ####
 
-
+### 后面的代码请不要修改
 def template(name:str, sql_list:list)->str:
     temp = f"""
 #!/usr/bin/env python
