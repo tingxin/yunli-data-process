@@ -43,14 +43,14 @@ cluster_params = {
                 'Market': 'ON_DEMAND',
                 'InstanceRole': 'CORE',
                 'InstanceType': 'm5.xlarge',  # Core 实例类型
-                'InstanceCount': 2
+                'InstanceCount': 1
             },
              {
                 'Name': 'Task',
                 'Market': 'SPOT',
                 'InstanceRole': 'TASK',
                 'InstanceType': 'm5.xlarge',  # Spot 实例类型
-                'InstanceCount': 2
+                'InstanceCount': 1
             }
         ],
         'Ec2KeyName': 'tingxin_dev', # Spot 实例类型
@@ -105,7 +105,8 @@ cluster_params = {
             "MinimumCapacityUnits":2,
             "MaximumCoreCapacityUnits":2
         }
-    }
+    },
+    "StepConcurrencyLevel": 100
 }
 
 # 创建集群
